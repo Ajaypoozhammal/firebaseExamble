@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled3/phone.dart';
 
 import 'Login.dart';
-import 'Screen4.dart';
+import 'Home.dart';
+import 'Toast message.dart';
 
 class Screen3 extends StatefulWidget {
   const Screen3({super.key});
@@ -14,11 +16,17 @@ class Screen3 extends StatefulWidget {
 }
 
 class _Screen3State extends State<Screen3> {
+
+  TextEditingController Email=TextEditingController();
+  TextEditingController Password=TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        backgroundColor: Colors.black,leading: GestureDetector(onTap: () { Navigator.pop(context); },child: Icon(Icons.arrow_back,color: Colors.white,)),
+        backgroundColor: Colors.black,leading: GestureDetector(onTap: () {  Navigator.pop(context);  }
+          ,child: Icon(Icons.arrow_back,color: Colors.white,)),
       ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -44,20 +52,22 @@ class _Screen3State extends State<Screen3> {
                   labelText: "UserName"),
             ),
             SizedBox(height: 20.h,),
-            TextField(style:TextStyle(color: Colors.white) ,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.r)),
-                  prefixIcon: Icon(Icons.search),
-                  labelText: "Password"),
-            ),
-            SizedBox(height: 20.h,),
-            TextField(style:TextStyle(color: Colors.white) ,
+            TextField(controller: Email,
+              style:TextStyle(color: Colors.white) ,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.r)),
                   prefixIcon: Icon(Icons.search),
                   labelText: "Email"),
+            ),
+            SizedBox(height: 20.h,),
+            TextField(controller: Password,
+              style:TextStyle(color: Colors.white) ,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r)),
+                  prefixIcon: Icon(Icons.search),
+                  labelText: "Password"),
             ),
             SizedBox(height: 20.h,),
             TextField(style:TextStyle(color: Colors.white) ,
@@ -87,7 +97,15 @@ class _Screen3State extends State<Screen3> {
               ),
             ),
             SizedBox(height: 10.h,),
-            GestureDetector(onTap: () { Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen4())); },
+            GestureDetector(onTap: () { auth
+                .createUserWithEmailAndPassword(
+                email: Email.text, password: Password.text)
+                .then((value) => {
+              ToastMessage().toastmessage(message: 'Successfully registerd'),
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>Screen4()))
+            })
+                .onError((error, stackTrace) => ToastMessage()
+                .toastmessage(message: error.toString())); },
               child: Container(
                 width: 244,
                 height: 48,

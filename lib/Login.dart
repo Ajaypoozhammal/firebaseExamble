@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Forgot.dart';
 import 'Singnup.dart';
-import 'Screen4.dart';
+import 'Home.dart';
+import 'Toast message.dart';
 import 'phone.dart';
 
 class Screen1 extends StatefulWidget {
@@ -15,6 +17,10 @@ class Screen1 extends StatefulWidget {
 }
 
 class _Screen1State extends State<Screen1> {
+  TextEditingController Email = TextEditingController();
+  TextEditingController Password = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,15 +42,17 @@ class _Screen1State extends State<Screen1> {
                 ),
               ),
               SizedBox(height: 30.h,),
-              TextField(style:TextStyle(color: Colors.white) ,
+              TextField(controller: Email
+                , style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.r)),
                     prefixIcon: Icon(Icons.search),
-                    labelText: "Username"),
+                    labelText: "Email"),
               ),
               SizedBox(height: 20.h),
-              TextField(style:TextStyle(color: Colors.white) ,
+              TextField(controller: Password
+                , style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.r)),
@@ -53,7 +61,10 @@ class _Screen1State extends State<Screen1> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 100),
-                child: TextButton(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen2()));},
+                child: TextButton(onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => Screen2()));
+                },
                   child: Text(
                     'Forgot  your password?',
                     style: GoogleFonts.lato(
@@ -67,10 +78,13 @@ class _Screen1State extends State<Screen1> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 100,top: 20),
+                padding: const EdgeInsets.only(left: 100, top: 20),
                 child: Row(
                   children: [
-                    GestureDetector(onTap: () { Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen5())); },
+                    GestureDetector(onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => Screen5()));
+                    },
                       child: Icon(
                         Icons.phone,
                         size: 30.sp,
@@ -85,12 +99,30 @@ class _Screen1State extends State<Screen1> {
                     ),
                   ],
                 ),
-              ),SizedBox(height: 30.h,),
-              GestureDetector(onTap: () { Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen4())); },
+              ), SizedBox(height: 30.h,),
+              GestureDetector(onTap: () {
+                auth
+                    .signInWithEmailAndPassword(
+                    email: Email.text, password: Password.text)
+                    .then((value) =>
+                {
+                  ToastMessage().toastmessage(
+                      message: 'Successfully Login'),
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Screen4()))
+                },)
+
+                    .onError((error, stackTrace) => ToastMessage()
+                    .toastmessage(message: error.toString(
+                )
+                )
+                );
+              },
                 child: Container(
                   width: 254,
                   height: 48,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 10),
                   decoration: ShapeDecoration(
                     color: Color(0xFF8204FF),
                     shape: RoundedRectangleBorder(
@@ -104,7 +136,7 @@ class _Screen1State extends State<Screen1> {
                       style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                           color: Colors.white,
-                          fontSize:22.sp,
+                          fontSize: 22.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -113,7 +145,10 @@ class _Screen1State extends State<Screen1> {
                 ),
               ),
               TextButton(
-                onPressed: () { Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen3())); },
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => Screen3()));
+                },
                 child: Text(
                   'Don’t have an account?Sign up ',
                   style: GoogleFonts.lato(
