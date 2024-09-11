@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'OTP.dart';
+import 'Toast message.dart';
 
 class Screen5 extends StatefulWidget {
   const Screen5({super.key});
@@ -12,6 +14,8 @@ class Screen5 extends StatefulWidget {
 }
 
 class _Screen5State extends State<Screen5> {
+  TextEditingController Phone=TextEditingController();
+  FirebaseAuth auth=FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +38,8 @@ class _Screen5State extends State<Screen5> {
           SizedBox(
             height: 50.h,
           ),
-          TextField(style:TextStyle(color: Colors.white) ,
+          TextField(controller: Phone,
+            style:TextStyle(color: Colors.white) ,
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.r)),
@@ -43,7 +48,19 @@ class _Screen5State extends State<Screen5> {
           ),
           SizedBox(height: 50.h,),
           Center(
-            child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen7()));},
+            child: GestureDetector(onTap: (){
+              auth.verifyPhoneNumber(phoneNumber: Phone.text,verificationCompleted: (_){},
+                  verificationFailed: (e){
+                    ToastMessage().toastmessage(message: e.toString());
+                  },
+                  codeSent: (String verificationId,int? token){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen7()));
+
+                  },
+                  codeAutoRetrievalTimeout: (e){
+                    ToastMessage().toastmessage(message: e.toString());
+                  });
+            },
               child: Container(
                 width: 104,
                 height: 38,
@@ -75,3 +92,4 @@ class _Screen5State extends State<Screen5> {
     );
   }
 }
+
