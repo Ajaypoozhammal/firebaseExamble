@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'Forgot.dart';
 import 'Singnup.dart';
@@ -20,6 +21,30 @@ class _Screen1State extends State<Screen1> {
   TextEditingController Email = TextEditingController();
   TextEditingController Password = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+
+  Future<void>signinwithgoogle()async{
+    try {
+      final GoogleSignInAccount? googleSignInAccount= await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication= await googleSignInAccount!.authentication;
+
+      final AuthCredential credential=GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken
+      );
+
+      final UserCredential userCredential= await auth.signInWithCredential(credential);
+      final User? user= userCredential.user;
+      if (user!=null) {
+        Navigator.push(context, MaterialPageRoute(builder: (_)=>Screen4()));
+        ToastMessage().toastmessage(message: 'succusfully completed');
+      }
+    } catch (e) {
+      ToastMessage().toastmessage(message: e.toString());
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +117,14 @@ class _Screen1State extends State<Screen1> {
                       ),
                     ),
                     SizedBox(width: 40.w,),
-                    Icon(
-                      Icons.g_mobiledata_outlined,
-                      size: 60.sp,
-                      color: Colors.white,
+                    GestureDetector(onTap: () {
+                      signinwithgoogle();
+                    },
+                      child: Icon(
+                        Icons.g_mobiledata_outlined,
+                        size: 60.sp,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -136,7 +165,7 @@ class _Screen1State extends State<Screen1> {
                       style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                           color: Colors.white,
-                          fontSize: 22.sp,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

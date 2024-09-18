@@ -14,13 +14,22 @@ class Screen5 extends StatefulWidget {
 }
 
 class _Screen5State extends State<Screen5> {
-  TextEditingController Phone=TextEditingController();
-  FirebaseAuth auth=FirebaseAuth.instance;
+  TextEditingController Phone = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        backgroundColor: Colors.black,leading: GestureDetector(onTap: () { Navigator.pop(context); },child: Icon(Icons.arrow_back,color: Colors.white,)),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
       ),
       backgroundColor: Colors.black,
       body: Column(
@@ -38,33 +47,42 @@ class _Screen5State extends State<Screen5> {
           SizedBox(
             height: 50.h,
           ),
-          TextField(controller: Phone,
-            style:TextStyle(color: Colors.white) ,
+          TextField(
+            controller: Phone,
+            style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.r)),
-                prefixIcon: Icon(Icons.search),
-                labelText: "Phone Number"),
+                prefix:Text('+91 '),
+                hintText:"phone number",hintStyle: TextStyle(color: Colors.white)),
           ),
-          SizedBox(height: 50.h,),
+          SizedBox(
+            height: 50.h,
+          ),
           Center(
-            child: GestureDetector(onTap: (){
-              auth.verifyPhoneNumber(phoneNumber: Phone.text,verificationCompleted: (_){},
-                  verificationFailed: (e){
-                    ToastMessage().toastmessage(message: e.toString());
-                  },
-                  codeSent: (String verificationId,int? token){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen7()));
-
-                  },
-                  codeAutoRetrievalTimeout: (e){
-                    ToastMessage().toastmessage(message: e.toString());
-                  });
-            },
+            child: GestureDetector(
+              onTap: () {
+                auth.verifyPhoneNumber(
+                    phoneNumber: "+91${Phone.text}",
+                    verificationCompleted: (_) {},
+                    verificationFailed: (e) {
+                      ToastMessage().toastmessage(message: e.toString());
+                    },
+                    codeSent: (String verificationId, int? token) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => Screen7(
+                                otp: verificationId,
+                              )));
+                    },
+                    codeAutoRetrievalTimeout: (e) {
+                      ToastMessage().toastmessage(message: e.toString());
+                    });
+              },
               child: Container(
                 width: 104,
                 height: 38,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: ShapeDecoration(
                   color: Color(0xFF8204FF),
                   shape: RoundedRectangleBorder(
@@ -92,4 +110,3 @@ class _Screen5State extends State<Screen5> {
     );
   }
 }
-
