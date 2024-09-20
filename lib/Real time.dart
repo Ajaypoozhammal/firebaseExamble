@@ -17,11 +17,20 @@ class Screen8 extends StatefulWidget {
 
 class _Screen8State extends State<Screen8> {
   final ref = FirebaseDatabase.instance.ref('Data');
-TextEditingController  editpost=TextEditingController();
-  @override
+  TextEditingController editpost = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Real Time",
+          style: GoogleFonts.roboto(
+              color: Colors.black,
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500),
+        ),
+      ),
       floatingActionButton: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) => Screen9()));
@@ -56,7 +65,8 @@ TextEditingController  editpost=TextEditingController();
           Expanded(
               child: StreamBuilder(
             stream: ref.onValue,
-            builder: (BuildContext context,AsyncSnapshot<DatabaseEvent> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshot) {
               if (!snapshot.hasData) {
                 return CircularProgressIndicator();
               } else {
@@ -66,16 +76,20 @@ TextEditingController  editpost=TextEditingController();
                 list.clear();
                 list = map.values.toList();
                 return ListView.builder(
-                    itemCount:snapshot.data!.snapshot.children.length,
+                    itemCount: snapshot.data!.snapshot.children.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Text("${index + 1}"),
                         title: Text(list[index]['title']),
                         trailing: Wrap(
                           children: [
-                            GestureDetector(onTap: (){
-                              opendailoge(index: index, snapshot: snapshot, id:list[index]["id"].toString());
-                            },
+                            GestureDetector(
+                              onTap: () {
+                                opendailoge(
+                                    index: index,
+                                    snapshot: snapshot,
+                                    id: list[index]["id"].toString());
+                              },
                               child: Icon(
                                 Icons.edit,
                                 color: Colors.black,
@@ -84,7 +98,10 @@ TextEditingController  editpost=TextEditingController();
                             SizedBox(
                               width: 15.w,
                             ),
-                            GestureDetector(onTap: (){ref.child(list[index]["id"]).remove();},
+                            GestureDetector(
+                              onTap: () {
+                                ref.child(list[index]["id"]).remove();
+                              },
                               child: Icon(
                                 Icons.delete,
                                 color: Colors.red,

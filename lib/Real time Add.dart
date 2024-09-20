@@ -20,7 +20,16 @@ class _Screen9State extends State<Screen9> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          "Real Time add",
+          style: GoogleFonts.roboto(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500)),
+        ),
+      ),
       body: Column(
         children: [
           TextField(
@@ -39,18 +48,18 @@ class _Screen9State extends State<Screen9> {
               final id = DateTime.now().microsecondsSinceEpoch.toString();
               database
                   .child(id)
-                  .set({"id": id, "title": post.text.toString()}).then(
-                (value) => {
-                  ToastMessage().toastmessage(message: 'adding Succesfully'),
-                  post.clear()
-                },
-
-              )
+                  .set({"id": id, "title": post.text.toString()})
+                  .then(
+                    (value) => {
+                      ToastMessage()
+                          .toastmessage(message: 'adding Succesfully'),
+                      post.clear()
+                    },
+                  )
                   .onError(
-                    (error, stackTrace) => ToastMessage()
-                    .toastmessage(message: error.toString()),
-              );
-
+                    (error, stackTrace) =>
+                        ToastMessage().toastmessage(message: error.toString()),
+                  );
             },
             child: Container(
               width: 104,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'FireStore.dart';
 import 'Real time.dart';
 
 class Screen4 extends StatefulWidget {
@@ -57,26 +58,28 @@ class _Screen4State extends State<Screen4> {
             ),
           ),
           SizedBox(height: 150.h,),
-          Container(
-            width: 104.w,
-            height: 38.h,
-            padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: ShapeDecoration(
-              color: Color(0xFF8204FF),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(width: 1, color: Color(0xFF8204FF)),
-                borderRadius: BorderRadius.circular(20),
+          GestureDetector(onTap:(){Navigator.push(context, MaterialPageRoute(builder:(_)=>Screen10()));},
+            child: Container(
+              width: 104.w,
+              height: 38.h,
+              padding:
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: ShapeDecoration(
+                color: Color(0xFF8204FF),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color(0xFF8204FF)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                'Fire store',
-                style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+              child: Center(
+                child: Text(
+                  'Fire store',
+                  style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
