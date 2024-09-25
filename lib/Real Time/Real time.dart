@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Real time Add.dart';
-import 'Toast message.dart';
+import '../Toast message.dart';
 
 class Screen8 extends StatefulWidget {
   const Screen8({super.key});
@@ -21,6 +21,7 @@ class _Screen8State extends State<Screen8> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -68,7 +69,7 @@ class _Screen8State extends State<Screen8> {
             builder:
                 (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshot) {
               if (!snapshot.hasData) {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               } else {
                 Map<dynamic, dynamic> map =
                     snapshot.data!.snapshot.value as dynamic;

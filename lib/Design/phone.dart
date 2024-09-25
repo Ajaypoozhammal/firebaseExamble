@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'Login.dart';
-import 'Toast message.dart';
+import 'OTP.dart';
+import '../Toast message.dart';
 
-class Screen2 extends StatefulWidget {
-  const Screen2({super.key});
+class Screen5 extends StatefulWidget {
+  const Screen5({super.key});
 
   @override
-  State<Screen2> createState() => _Screen2State();
+  State<Screen5> createState() => _Screen5State();
 }
 
-class _Screen2State extends State<Screen2> {
-  TextEditingController Email = TextEditingController();
+class _Screen5State extends State<Screen5> {
+  TextEditingController Phone = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -34,15 +34,13 @@ class _Screen2State extends State<Screen2> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Center(
-            child: Text(
-              'Forgot Password',
-              style: GoogleFonts.lato(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 34.sp,
-                  fontWeight: FontWeight.w700,
-                ),
+          Text(
+            "Phone",
+            style: GoogleFonts.lato(
+              textStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 34.sp,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -50,13 +48,13 @@ class _Screen2State extends State<Screen2> {
             height: 50.h,
           ),
           TextField(
-            controller: Email,
+            controller: Phone,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.r)),
-                prefixIcon: Icon(Icons.search),
-                labelText: "Email"),
+                prefix:Text('+91 '),
+                hintText:"phone number",hintStyle: TextStyle(color: Colors.white)),
           ),
           SizedBox(
             height: 50.h,
@@ -64,17 +62,24 @@ class _Screen2State extends State<Screen2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                auth.sendPasswordResetEmail(email: Email.text).then((value) {
-                  ToastMessage()
-                      .toastmessage(message: 'password changed successfully');
-                  Navigator.of(context)
-                      .pop(MaterialPageRoute(builder: (_) => Screen1()));
-                }).onError((error, stackTrace) {
-                  ToastMessage().toastmessage(message: error.toString());
-                });
+                auth.verifyPhoneNumber(
+                    phoneNumber: "+91${Phone.text}",
+                    verificationCompleted: (_) {},
+                    verificationFailed: (e) {
+                      ToastMessage().toastmessage(message: e.toString());
+                    },
+                    codeSent: (String verificationId, int? token) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => Screen7(
+                                otp: verificationId,
+                              )));
+                    },
+                    codeAutoRetrievalTimeout: (e) {
+                      ToastMessage().toastmessage(message: e.toString());
+                    });
               },
               child: Container(
-                width: 184,
+                width: 104,
                 height: 38,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -87,7 +92,7 @@ class _Screen2State extends State<Screen2> {
                 ),
                 child: Center(
                   child: Text(
-                    'Reset',
+                    'Verify',
                     style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                         color: Colors.white,

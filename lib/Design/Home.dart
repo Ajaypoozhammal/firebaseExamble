@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled3/Storage/store.dart';
 
-import 'FireStore.dart';
-import 'Real time.dart';
+import '../FiresStore/FireStore.dart';
+
+import '../Real Time/Real time.dart';
+import '../Storage/result.dart';
 
 class Screen4 extends StatefulWidget {
   const Screen4({super.key});
@@ -74,6 +77,35 @@ class _Screen4State extends State<Screen4> {
               child: Center(
                 child: Text(
                   'Fire store',
+                  style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          SizedBox(height: 150.h,),
+          GestureDetector(onTap:(){Navigator.push(context, MaterialPageRoute(builder:(_)=>Store()));},
+            child: Container(
+              width: 104.w,
+              height: 38.h,
+              padding:
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: ShapeDecoration(
+                color: Color(0xFF8204FF),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color(0xFF8204FF)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'store',
                   style: GoogleFonts.roboto(
                     textStyle: TextStyle(
                       color: Colors.white,

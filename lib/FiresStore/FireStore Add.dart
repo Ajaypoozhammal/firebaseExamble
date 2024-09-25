@@ -1,4 +1,4 @@
-import 'dart:js_interop';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,8 +18,10 @@ class _Screen11State extends State<Screen11> {
   TextEditingController add = TextEditingController();
   final firestore = FirebaseFirestore.instance.collection('Data');
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,6 +50,7 @@ class _Screen11State extends State<Screen11> {
                 firestore.doc(id).set(
                     {"id": id, "title": add.text.toString()}).then((value) {
                   ToastMessage().toastmessage(message: 'post added');
+                  add.clear();
                 });
               },
               child: Container(

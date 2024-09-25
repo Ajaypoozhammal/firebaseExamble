@@ -7,7 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'Forgot.dart';
 import 'Singnup.dart';
 import 'Home.dart';
-import 'Toast message.dart';
+import '../Toast message.dart';
 import 'phone.dart';
 
 class Screen1 extends StatefulWidget {

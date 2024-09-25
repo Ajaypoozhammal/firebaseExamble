@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled3/phone.dart';
+import 'package:untitled3/Design/phone.dart';
 
 import 'Login.dart';
 import 'Home.dart';
-import 'Toast message.dart';
+import '../Toast message.dart';
 
 class Screen3 extends StatefulWidget {
   const Screen3({super.key});
